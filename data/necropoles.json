@@ -1,0 +1,118 @@
+[
+  {
+    "id": "radimlja",
+    "naziv": "Radimlja",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Hercegovačko-neretvanski kanton",
+    "opcina": "Stolac",
+    "koordinate": { "lat": 43.0736, "lng": 17.9536 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 133,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": ["ruka podignuta u pozdrav", "mač", "štit", "spirala u trku", "lov na jelena", "rozeta"],
+    "natpisi": true,
+    "period": "14–16. stoljeće",
+    "opis": "Jedna od najpoznatijih i najbolje istraženih nekropola stećaka, vezana uz vlastelinsku porodicu Miloradović-Hrabren-Stjepanović. Poznata po motivu ruke s ispruženim prstima i bogatoj kamenoj plastici.",
+    "izvori": [
+      "UNESCO World Heritage List – Stećci Medieval Tombstone Graveyards (2016)",
+      "Komisija za očuvanje nacionalnih spomenika BiH"
+    ],
+    "napomenaPodataka": "Podaci su okvirni/uvodni – potrebno je dopuniti preciznim mjerenjima s terena i citiranom literaturom."
+  },
+  {
+    "id": "boljuni",
+    "naziv": "Boljuni",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Hercegovačko-neretvanski kanton",
+    "opcina": "Stolac",
+    "koordinate": { "lat": 43.0158, "lng": 17.9683 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 280,
+    "oblici": ["ploča", "sanduk", "sljemenjak", "stub"],
+    "motivi": ["natpis", "rozeta", "arkade", "lov", "mač"],
+    "natpisi": true,
+    "period": "14–15. stoljeće",
+    "opis": "Velika nekropola s više grupacija stećaka, poznata po epigrafskim natpisima uklesanim bosančicom.",
+    "izvori": [
+      "UNESCO World Heritage List – Stećci Medieval Tombstone Graveyards (2016)",
+      "Komisija za očuvanje nacionalnih spomenika BiH"
+    ],
+    "napomenaPodataka": "Podaci su okvirni/uvodni – potrebno je dopuniti preciznim mjerenjima s terena i citiranom literaturom."
+  },
+  {
+    "id": "dugo-polje-blidinje",
+    "naziv": "Dugo polje (Blidinje)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Hercegovačko-neretvanski kanton",
+    "opcina": "Jablanica / Posušje",
+    "koordinate": { "lat": 43.6167, "lng": 17.6167 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 240,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": ["spirala", "rozeta", "krst", "geometrijski ornamenti"],
+    "natpisi": false,
+    "period": "14–15. stoljeće",
+    "opis": "Nekropola na visoravni Dugo polje unutar Parka prirode Blidinje, primjer stećaka smještenih u planinskom, pastoralnom krajoliku.",
+    "izvori": [
+      "UNESCO World Heritage List – Stećci Medieval Tombstone Graveyards (2016)"
+    ],
+    "napomenaPodataka": "Podaci su okvirni/uvodni – potrebno je dopuniti preciznim mjerenjima s terena i citiranom literaturom."
+  },
+  {
+    "id": "kalufi",
+    "naziv": "Kalufi (Cista Provo)",
+    "drzava": "Hrvatska",
+    "entitet": "Splitsko-dalmatinska županija",
+    "opcina": "Cista Provo",
+    "koordinate": { "lat": 43.5333, "lng": 17.0333 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 60,
+    "oblici": ["ploča", "sanduk"],
+    "motivi": ["rozeta", "spirala", "krst"],
+    "natpisi": false,
+    "period": "14–15. stoljeće",
+    "opis": "Jedan od hrvatskih lokaliteta uvrštenih u serijsku UNESCO nominaciju stećaka, smješten u zaleđu Cetinske krajine.",
+    "izvori": [
+      "UNESCO World Heritage List – Stećci Medieval Tombstone Graveyards (2016)"
+    ],
+    "napomenaPodataka": "Podaci su okvirni/uvodni – potrebno je dopuniti preciznim mjerenjima s terena i citiranom literaturom."
+  },
+  {
+    "id": "grcko-groblje-zabljak",
+    "naziv": "Grčko groblje (Žabljak Crnojevića)",
+    "drzava": "Crna Gora",
+    "entitet": "Prijestonica Cetinje",
+    "opcina": "Cetinje",
+    "koordinate": { "lat": 42.3167, "lng": 19.1167 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 50,
+    "oblici": ["ploča", "sanduk"],
+    "motivi": ["krst", "rozeta", "geometrijski ornamenti"],
+    "natpisi": false,
+    "period": "14–15. stoljeće",
+    "opis": "Nekropola u blizini srednjovjekovnog utvrđenja Žabljak Crnojevića, jedan od crnogorskih lokaliteta serijske UNESCO nominacije.",
+    "izvori": [
+      "UNESCO World Heritage List – Stećci Medieval Tombstone Graveyards (2016)"
+    ],
+    "napomenaPodataka": "Podaci su okvirni/uvodni – potrebno je dopuniti preciznim mjerenjima s terena i citiranom literaturom."
+  },
+  {
+    "id": "mramorje-perucac",
+    "naziv": "Mramorje (Perućac)",
+    "drzava": "Srbija",
+    "entitet": "Zlatiborski okrug",
+    "opcina": "Bajina Bašta",
+    "koordinate": { "lat": 43.9500, "lng": 19.4500 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 45,
+    "oblici": ["ploča", "sanduk"],
+    "motivi": ["rozeta", "krst"],
+    "natpisi": false,
+    "period": "14–15. stoljeće",
+    "opis": "Nekropola u selu Perućac, jedan od srpskih lokaliteta uvrštenih u serijsku UNESCO nominaciju stećaka.",
+    "izvori": [
+      "UNESCO World Heritage List – Stećci Medieval Tombstone Graveyards (2016)"
+    ],
+    "napomenaPodataka": "Podaci su okvirni/uvodni – potrebno je dopuniti preciznim mjerenjima s terena i citiranom literaturom."
+  }
+]
