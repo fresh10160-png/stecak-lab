@@ -51,7 +51,11 @@ export default function NecropoleMap({
               <div className="text-stone-600">
                 {n.opcina}, {n.drzava}
               </div>
-              <div className="mt-1">≈ {n.brojStecakaPribl} stećaka</div>
+              <div className="mt-1">
+                {n.brojStecakaPribl != null
+                  ? `≈ ${n.brojStecakaPribl} stećaka`
+                  : "broj stećaka nije dokumentiran"}
+              </div>
               <Link
                 href={`/nekropole/${n.id}`}
                 className="mt-2 inline-block text-moss-700 underline"

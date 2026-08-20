@@ -54,13 +54,24 @@ export default function DetaljNekropolePage({
             <Statistika naslov="Period" vrijednost={nekropola.period} />
             <Statistika
               naslov="Broj stećaka"
-              vrijednost={`≈ ${nekropola.brojStecakaPribl}`}
+              vrijednost={
+                nekropola.brojStecakaPribl != null
+                  ? `≈ ${nekropola.brojStecakaPribl}`
+                  : "nije dokumentirano"
+              }
             />
             <Statistika
               naslov="Natpisi"
               vrijednost={nekropola.natpisi ? "da" : "ne"}
             />
-            <Statistika naslov="Oblici" vrijednost={nekropola.oblici.join(", ")} />
+            <Statistika
+              naslov="Oblici"
+              vrijednost={
+                nekropola.oblici.length > 0
+                  ? nekropola.oblici.join(", ")
+                  : "nije dokumentirano"
+              }
+            />
           </section>
 
           <section>
@@ -68,6 +79,11 @@ export default function DetaljNekropolePage({
               Motivi i ornamentika
             </h2>
             <div className="mt-2 flex flex-wrap gap-2">
+              {nekropola.motivi.length === 0 && (
+                <span className="text-sm text-stone-500">
+                  Motivi nisu pobliže dokumentirani u dostupnim izvorima.
+                </span>
+              )}
               {nekropola.motivi.map((m) => (
                 <span
                   key={m}

@@ -34,13 +34,35 @@ export default function OProjektuPage() {
         </h2>
         <p className="mt-2 text-sm text-stone-700">
           Podaci u <code className="rounded bg-stone-100 px-1">data/necropoles.json</code>{" "}
-          su polazni, ilustrativni skup (šest poznatih lokaliteta) namijenjen
-          pokretanju istraživanja i demonstraciji alata. Koordinate su okvirne
-          (na razini naselja), a brojevi stećaka i opisi trebaju biti provjereni
-          i dopunjeni terenskim podacima, konzervatorskom dokumentacijom i
-          stručnom literaturom (npr. izdanja Komisije za očuvanje nacionalnih
-          spomenika BiH, monografije Š. Bešlagića, dokumentacija UNESCO-ove
-          nominacije) prije korištenja u ozbiljnom istraživačkom radu.
+          su polazni skup od 23 lokaliteta (20 iz Bosne i Hercegovine te po
+          jedan iz Hrvatske, Crne Gore i Srbije), prikupljen web-pretragom
+          javno dostupnih izvora (Wikipedia, stecciwh.org, kons.gov.ba,
+          UNESCO-ova dokumentacija, lokalni mediji). Gdje izvori nisu naveli
+          točan broj stećaka, oblike ili motive, polje je ostavljeno prazno
+          (<code className="rounded bg-stone-100 px-1">null</code> / [ ]) umjesto
+          nagađanja — u UI-ju se to prikazuje kao &ldquo;nije dokumentirano&rdquo;.
+          Koordinate su za većinu lokaliteta na razini općine/naselja (nije
+          korišten GPS s terena), pa prije ozbiljnog istraživačkog rada podatke
+          treba dopuniti terenskim mjerenjima, konzervatorskom dokumentacijom
+          i stručnom literaturom (npr. monografije Š. Bešlagića). Svaki zapis
+          navodi izvor(e) korištene za taj lokalitet.
+        </p>
+      </section>
+
+      <section>
+        <h2 className="font-serif text-lg font-semibold text-moss-900">
+          O upitu za lokalitet &ldquo;Japod&rdquo;
+        </h2>
+        <p className="mt-2 text-sm text-stone-700">
+          Istraživanje nije pronašlo nikakvu nekropolu stećaka pod nazivom
+          &ldquo;Japod&rdquo;, &ldquo;Japode&rdquo; ili &ldquo;Japoda&rdquo; — ni na UNESCO-voj listi
+          ni u evidenciji Komisije za očuvanje nacionalnih spomenika BiH.
+          Japodi (Iapydes) su bili ilirsko pleme željeznog doba (prije nove
+          ere) nastanjeno u dolini Une oko Bihaća — potpuno druga kultura i
+          period od srednjovjekovnih stećaka (12–16. stoljeće). Naziv se danas
+          koristi npr. za turističko odredište &ldquo;Japodski otoci&rdquo; kod Bihaća,
+          koje nema veze s nadgrobnim spomenicima. Lokalitet stoga namjerno
+          nije dodan u katalog kako se ne bi unijeli izmišljeni podaci.
         </p>
       </section>
 

@@ -59,6 +59,340 @@
     "napomenaPodataka": "Podaci su okvirni/uvodni – potrebno je dopuniti preciznim mjerenjima s terena i citiranom literaturom."
   },
   {
+    "id": "grcka-glavica",
+    "naziv": "Grčka glavica",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Hercegovačko-neretvanski kanton",
+    "opcina": "Konjic (Glavatičevo)",
+    "koordinate": { "lat": 43.65, "lng": 17.9667 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 172,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": ["vitica s trolistom", "dijagonalni friz", "arkade"],
+    "natpisi": true,
+    "period": "12–16. stoljeće",
+    "opis": "Nekropola sa 172 stećka i brojnim neobilježenim grobovima, smještena kod sela Biskup jugoistočno od Konjica. Sadrži natpis posvećen Gojisavi, drugoj supruzi hercegovačkog vojvode Radiča Sankovića.",
+    "izvori": [
+      "https://en.wikipedia.org/wiki/Grčka_Glavica_necropolis",
+      "https://www.konjic.ba/ba/opcina-konjic/nacionalni-spomenici/53-nekropola-i-ostaci-crkve-grcka-glavica.html"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Konjic; lokalitet je kod sela Biskup, oko 30 km jugoistočno od centra grada – potrebno precizno terensko pozicioniranje."
+  },
+  {
+    "id": "kalufi-nevesinje",
+    "naziv": "Kalufi (Krekovi)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Nevesinje",
+    "koordinate": { "lat": 43.2667, "lng": 18.1167 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 462,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": [],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Najveća nekropola stećaka u Bosni i Hercegovini (462 spomenika na površini od oko 18.000 m²), smještena kod sela Krekovi nedaleko od Nevesinja; uključuje i 14 antičkih spolija naknadno uklopljenih u nekropolu.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Kalufi",
+      "https://www.fokus.ba/magazin/kultura/nevesinje-posjeduje-cak-tri-hiljade-stecaka/1886112/"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Nevesinje; motivi ornamentike nisu pobliže dokumentirani u dostupnim izvorima – potrebna terenska provjera."
+  },
+  {
+    "id": "borak-burati",
+    "naziv": "Borak (Burati)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Rogatica",
+    "koordinate": { "lat": 43.7967, "lng": 18.9975 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 212,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": ["ljiljan", "ruka s mačem", "krst", "polumjesec", "dvostruka spirala", "lov"],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Nekropola od 212 stećaka kod sela Burati, od kojih je 7 ukrašeno motivima poput ruke s mačem, ljiljana i prizora lova. Bila je nominirana za UNESCO-vu listu svjetske baštine.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Borak",
+      "https://www.rogatica.com/2014/12/27/nekropola-sa-steccima-borak-nominovana-za-upis-na-listu-svjetske-bastine-unesco-a/"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Rogatica – potrebno precizno terensko pozicioniranje."
+  },
+  {
+    "id": "maculje",
+    "naziv": "Maculje (Kameni svatovi)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Srednjobosanski kanton",
+    "opcina": "Novi Travnik (Rostovo)",
+    "koordinate": { "lat": 44.1725, "lng": 17.6669 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 101,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": [],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Nekropola poznata pod nazivom „Kameni svatovi“, sa 101 stećkom i 16 kamenih križeva, smještena u području Rostovo oko 20 km od Novog Travnika.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Maculje",
+      "https://furaj.ba/kameni-svatovi-jedinstvena-nekropola-stecaka-kod-novog-travnika/"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Novi Travnik; motivi ornamentike nisu pobliže dokumentirani u dostupnim izvorima."
+  },
+  {
+    "id": "gvozno",
+    "naziv": "Gvozno",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Kalinovik",
+    "koordinate": { "lat": 43.5333, "lng": 18.4333 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 87,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": ["lov", "ples"],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Nekropola od 87 stećaka na kraškom polju u podnožju Treskavice, oko 11 km sjeverozapadno od Kalinovika; 14 spomenika ukrašeno je prizorima lova i kola (plesa).",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Gvozno",
+      "https://took.ba/unesco/"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Kalinovik – potrebno precizno terensko pozicioniranje."
+  },
+  {
+    "id": "grebnice-buncici",
+    "naziv": "Grebnice-Bunčići",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Bileća (Baljci)",
+    "koordinate": { "lat": 42.8747, "lng": 18.4383 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 291,
+    "oblici": ["ploča", "sanduk", "sljemenjak", "stub"],
+    "motivi": ["arkade", "vitica s trolistom", "krst", "niz rozeta", "vodenica", "romb mreža", "upletena traka", "ruka"],
+    "natpisi": true,
+    "period": "12–16. stoljeće",
+    "opis": "Šumska nekropola od 291 spomenika kod sela Baljci, s 32 ukrašena stećka i šest natpisa uklesanih bosančicom iz 15. stoljeća, među kojima epitafi Vukše Dubčevića, Bunca Rušovića i monaha Gligorija.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Grebnice-Bunčići"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Bileća; lokalitet je kod sela Baljci, oko 7 km sjeveroistočno od centra."
+  },
+  {
+    "id": "bijaca",
+    "naziv": "Bijača",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Zapadnohercegovačka županija",
+    "opcina": "Ljubuški",
+    "koordinate": { "lat": 43.1961, "lng": 17.5486 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": null,
+    "oblici": [],
+    "motivi": [],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "UNESCO-om upisana nekropola stećaka kod Ljubuškog; mediji su izvještavali o oštećenjima spomenika uzrokovanim kemijskim bijeljenjem kamena.",
+    "izvori": [
+      "https://www.klix.ba/vijesti/bih/stecci-na-bijaci-pocitelj-i-dervisagica-kuca-u-srebrenici-ugrozeni-spomenici/140205065"
+    ],
+    "napomenaPodataka": "Broj stećaka, oblici i motivi nisu pronađeni u dostupnim izvorima – potrebna dodatna terenska i arhivska provjera. Koordinate su na razini općine Ljubuški."
+  },
+  {
+    "id": "olovci",
+    "naziv": "Olovci",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Tuzlanski kanton",
+    "opcina": "Kladanj",
+    "koordinate": { "lat": 44.2167, "lng": 18.6833 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 18,
+    "oblici": ["sanduk", "sljemenjak", "stub"],
+    "motivi": ["dvostruka spirala", "upletena traka", "krst", "koplje"],
+    "natpisi": true,
+    "period": "12–16. stoljeće",
+    "opis": "Jedina nekropola stećaka s Tuzlanskog kantona na UNESCO-voj listi; 18 spomenika kod sela Olovci, s natpisom koji spominje Radomira Jurisalića.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Olovci",
+      "https://bastina.ba/jedina-nekropola-stecaka-sa-tuzlanskog-kantona-na-listi-svjetske-kulturne-bastine-unesco-a/"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Kladanj – potrebno precizno terensko pozicioniranje."
+  },
+  {
+    "id": "mramor-musici",
+    "naziv": "Mramor (Musići)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Zeničko-dobojski kanton",
+    "opcina": "Olovo",
+    "koordinate": { "lat": 44.1333, "lng": 18.5833 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 80,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": ["spirala", "rozeta", "upletena traka", "krst"],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Nekropola od 80 stećaka kod sela Musići, oko 4 km jugozapadno od Olova; ukrašavanje je isključivo geometrijsko, bez figuralnih prizora.",
+    "izvori": [
+      "https://www.stecciwh.org/mramor-in-musici-olovo-fbih/",
+      "https://bs.wikipedia.org/wiki/Nekropola_Mramor"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Olovo – potrebno precizno terensko pozicioniranje."
+  },
+  {
+    "id": "kucarin",
+    "naziv": "Kučarin (Donje Polje)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Bosansko-podrinjski kanton",
+    "opcina": "Goražde (Hrančići)",
+    "koordinate": { "lat": 43.6667, "lng": 18.9833 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 325,
+    "oblici": [],
+    "motivi": ["ljiljan", "srp", "žlijeb", "krst", "jelen"],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Nekropola sa 325 vidljivih stećaka kod zaseoka Vranci (selo Hrančići), oko 15 km zapadno od Goražda; četiri spomenika ukrašena su motivima ljiljana, srpa i jelena.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Kučarin-Donje_Polje"
+    ],
+    "napomenaPodataka": "Oblici stećaka nisu pobliže dokumentirani u dostupnim izvorima. Koordinate su na razini općine Goražde."
+  },
+  {
+    "id": "dolovi-umoljani",
+    "naziv": "Dolovi (Umoljani)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Kanton Sarajevo",
+    "opcina": "Trnovo (FBiH)",
+    "koordinate": { "lat": 43.6167, "lng": 18.3667 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 47,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": [],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Glavni od šest lokaliteta stećaka oko sela Umoljani na planini Bjelašnici; nacionalni spomenik obuhvaća ukupno 53 stećka i 11 nišana na svih šest lokacija, od čega 47 stećaka na Dolovima.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Umoljani"
+    ],
+    "napomenaPodataka": "Motivi nisu pobliže dokumentirani u dostupnim izvorima. Koordinate su okvirne (naselje Umoljani, Trnovo FBiH)."
+  },
+  {
+    "id": "luburica-polje",
+    "naziv": "Luburića polje",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Sokolac (Košutica)",
+    "koordinate": { "lat": 43.9333, "lng": 18.8 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 134,
+    "oblici": ["sanduk", "sljemenjak"],
+    "motivi": [],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Dvije nekropole (Ploče i Bare), udaljene 280 m, kod sela Košutica; Ploče se nalaze na pretpovijesnoj tumuli, a zajedno broje 134 stećka.",
+    "izvori": [
+      "https://www.stecciwh.org/luburica-polje-sokolac-rs/"
+    ],
+    "napomenaPodataka": "Motivi nisu pobliže dokumentirani u dostupnim izvorima. Koordinate su na razini općine Sokolac."
+  },
+  {
+    "id": "potkuk-bitunja",
+    "naziv": "Potkuk (Gornja Bitunja)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Berkovići",
+    "koordinate": { "lat": 43.0333, "lng": 17.9333 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 243,
+    "oblici": ["sanduk"],
+    "motivi": [],
+    "natpisi": false,
+    "period": "kraj 14. – početak 16. stoljeća",
+    "opis": "Nekropola raspoređena na četiri lokaliteta (Potkuk, Lokve, Zakuk, Baba) s ukupno 243 spomenika, od kojih je oko petine ukrašeno; nastajala je od kraja 14. do početka 16. stoljeća.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Potkuk",
+      "https://arheohercegovina.com/2016/12/04/potkuk-g-bitunja/"
+    ],
+    "napomenaPodataka": "Motivi nisu pobliže navedeni u dostupnim izvorima. Koordinate su na razini općine Berkovići."
+  },
+  {
+    "id": "becani",
+    "naziv": "Bečani",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Šekovići",
+    "koordinate": { "lat": 44.3278, "lng": 18.8449 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": null,
+    "oblici": [],
+    "motivi": [],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "UNESCO-om upisan lokalitet stećaka kod Šekovića, proglašen nacionalnim spomenikom BiH odlukom Komisije za očuvanje nacionalnih spomenika 2010. godine.",
+    "izvori": [
+      "Komisija za očuvanje nacionalnih spomenika BiH – Odluka br. 05.2-02.3-71/10-34, 26. 10. 2010."
+    ],
+    "napomenaPodataka": "Broj, oblici i motivi stećaka nisu pronađeni u dostupnim izvorima – potrebna dodatna provjera. Koordinate (44°19'40.09\"S, 18°50'41.78\"I) preuzete su iz teksta odluke o proglašenju nacionalnim spomenikom."
+  },
+  {
+    "id": "mramor-crkvina-foca",
+    "naziv": "Mramor (Crkvina, Vrbica)",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Foča (Čelebići)",
+    "koordinate": { "lat": 43.5058, "lng": 18.7794 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 74,
+    "oblici": ["sanduk", "sljemenjak"],
+    "motivi": ["ljudski lik", "krst", "mač", "jabuka", "zvijezda", "ruka", "pastirski štap", "polumjesec"],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Lokalitet kod sela Vrbica (blizu Čelebića) s preko 200 grobnih spomenika ukupno, uključujući 4 kasnoantička nadgrobna spomenika, 129 sanduka/sarkofaga i 74 stećka neodređenog oblika, ukrašena raznovrsnim motivima.",
+    "izvori": [
+      "https://seesrpska.com/neobicni-ukrasi-na-steccima-u-vrbici",
+      "https://www.wikidata.org/wiki/Q31082494"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Foča – potrebno precizno terensko pozicioniranje."
+  },
+  {
+    "id": "cengica-bara",
+    "naziv": "Čengića Bara",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Republika Srpska",
+    "opcina": "Kalinovik (Kladovo polje)",
+    "koordinate": { "lat": 43.5333, "lng": 18.4333 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 52,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": [],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Nekropola od 52 stećka na kraškom polju Kladovo na planini Zelengori, oko 11 km jugozapadno od Kalinovika; kamen je vađen iz obližnjeg kamenoloma udaljenog oko 100 m.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Čengića_Bara",
+      "http://whc.unesco.org/en/documents/141978"
+    ],
+    "napomenaPodataka": "Motivi nisu pobliže dokumentirani u dostupnim izvorima. Koordinate su na razini općine Kalinovik – istovjetne lokalitetu Gvozno jer je poznata samo općinska razina; potrebno precizno terensko pozicioniranje za oba lokaliteta."
+  },
+  {
+    "id": "ravanjska-vrata",
+    "naziv": "Ravanjska vrata",
+    "drzava": "Bosna i Hercegovina",
+    "entitet": "Hercegbosanska županija",
+    "opcina": "Kupres (Mušići)",
+    "koordinate": { "lat": 43.9833, "lng": 17.2833 },
+    "unescoLokalitet": true,
+    "brojStecakaPribl": 68,
+    "oblici": ["ploča", "sanduk", "sljemenjak"],
+    "motivi": ["cik-cak traka", "ljiljan", "lov", "kolo", "ruka s mačem", "štit s mačem", "vitica s trolistom", "upleteni vijenac"],
+    "natpisi": false,
+    "period": "12–16. stoljeće",
+    "opis": "Dvije nekropole (donja i gornja) kod sela Mušići s ukupno 68 stećaka, bogato ukrašenih prizorima lova, kola (plesa) i heraldičkim motivima poput ruke s mačem i štita.",
+    "izvori": [
+      "https://bs.wikipedia.org/wiki/Nekropola_Ravanjska_Vrata",
+      "https://www.stecciwh.org/ravanjska-vrata-kupres-fbih/"
+    ],
+    "napomenaPodataka": "Koordinate su na razini općine Kupres – potrebno precizno terensko pozicioniranje."
+  },
+  {
     "id": "kalufi",
     "naziv": "Kalufi (Cista Provo)",
     "drzava": "Hrvatska",

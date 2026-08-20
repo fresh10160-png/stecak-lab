@@ -45,12 +45,15 @@ data/necropoles.json  polazni skup podataka o nekropolama
 
 ## Podaci
 
-`data/necropoles.json` sadrži **polazni, ilustrativni skup** od nekoliko
-poznatih nekropola (npr. Radimlja, Boljuni) namijenjen pokretanju
-istraživanja i demonstraciji alata. Koordinate su okvirne (na razini
-naselja), a brojevi stećaka i opisi trebaju biti provjereni i dopunjeni
-terenskim podacima i stručnom literaturom prije ozbiljne istraživačke
-upotrebe — vidi stranicu **O projektu** u aplikaciji.
+`data/necropoles.json` sadrži **polazni skup od 23 lokaliteta** (20 iz Bosne
+i Hercegovine — uključujući sve zasad prikupljene UNESCO-om upisane BiH
+nekropole — te po jedan iz Hrvatske, Crne Gore i Srbije), prikupljen
+web-pretragom javno dostupnih izvora. Koordinate su za većinu lokaliteta na
+razini općine/naselja (nisu terenski GPS-mjerene), a polja koja izvori nisu
+naveli (broj stećaka, oblici, motivi) ostavljena su prazna/`null` umjesto
+nagađanja. Svaki zapis navodi korištene izvore. Prije ozbiljne istraživačke
+upotrebe podatke treba dopuniti terenskim mjerenjima i stručnom literaturom
+— vidi stranicu **O projektu** u aplikaciji.
 
 Novi lokalitet dodaje se kao novi objekt u `data/necropoles.json`, prema
 strukturi definiranoj u `lib/types.ts`; automatski se pojavljuje u katalogu,

@@ -11,7 +11,8 @@ export interface Nekropola {
   opcina: string;
   koordinate: Koordinate;
   unescoLokalitet: boolean;
-  brojStecakaPribl: number;
+  /** Približan broj stećaka; null ako broj nije dokumentiran u dostupnim izvorima. */
+  brojStecakaPribl: number | null;
   oblici: string[];
   motivi: string[];
   natpisi: boolean;

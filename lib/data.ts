@@ -48,7 +48,7 @@ export function getStatistikaPoDrzavi() {
   for (const n of nekropole) {
     const entry = map.get(n.drzava) ?? { drzava: n.drzava, brojNekropola: 0, brojStecaka: 0 };
     entry.brojNekropola += 1;
-    entry.brojStecaka += n.brojStecakaPribl;
+    entry.brojStecaka += n.brojStecakaPribl ?? 0;
     map.set(n.drzava, entry);
   }
   return Array.from(map.values());
@@ -67,5 +67,10 @@ export function getStatistikaMotiva() {
 }
 
 export function getUkupanBrojStecaka(): number {
-  return nekropole.reduce((sum, n) => sum + n.brojStecakaPribl, 0);
+  return nekropole.reduce((sum, n) => sum + (n.brojStecakaPribl ?? 0), 0);
+}
+
+/** Broj nekropola kojima broj stećaka nije dokumentiran u dostupnim izvorima. */
+export function getBrojNedokumentiranih(): number {
+  return nekropole.filter((n) => n.brojStecakaPribl == null).length;
 }
