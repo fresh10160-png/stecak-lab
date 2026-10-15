@@ -46,6 +46,16 @@ public class VoiceCheck {
                 }
                 check("sing h=" + harm + " vib=" + vib, ok, sb.toString());
             }
+            // quiet mic (-40 dB) and breathy voice (noise ~ 35% of the signal) must still be tracked
+            for (double amp : new double[]{0.01, 1.0}) {
+                double nzl = amp == 1.0 ? 0.12 : 0.0005;
+                float[] q = sing(rate, spec, 25, nzl, 5, 77);
+                for (int i = 0; i < q.length; i++) q[i] *= amp;
+                Melody qm = Melody.analyze(Sample.mono("q", q));
+                boolean ok = qm.notes.size() == want.length;
+                for (int i = 0; ok && i < want.length; i++) ok &= Math.round(qm.notes.get(i).pitch) == want[i];
+                check(amp < 1 ? "quiet mic (-40 dB)" : "breathy voice", ok, qm.notes.size() + " notes");
+            }
             // glide up 3 semitones inside a long note is split into notes; pitch-snap into C major
             Melody g = Melody.analyze(Sample.mono("g", sing(rate, new double[][]{{0.1, 1.1, 61.4}}, 0, 0, 6, 9)));
             check("scale snap 61.4 -> D (C maj)", g.notes.size() == 1 && Melody.snapToScale(61.4f, 0, 1) == 62 && Melody.snapToScale(61.4f, 0, 0) == 61 && Melody.snapToScale(61.4f, 1, 1) == 61,

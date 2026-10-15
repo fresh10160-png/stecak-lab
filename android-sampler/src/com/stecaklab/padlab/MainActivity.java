@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
     private TextView warpStatus;
 
     private volatile boolean micRecording;
+    volatile float micPeak;
     private final long[] taps = new long[4];
     private int tapCount;
 
@@ -73,7 +74,7 @@ public class MainActivity extends Activity {
         public void run() {
             if (curTab == 1) refreshWarpStatus();
             if (curTab == 4) voice.tick();
-            ui.postDelayed(this, 150);
+            ui.postDelayed(this, 90);
         }
     };
 
@@ -611,6 +612,9 @@ public class MainActivity extends Activity {
                     while (micRecording && n < max) {
                         int r = ar.read(chunk, 0, chunk.length);
                         if (r <= 0) break;
+                        int pk = 0;
+                        for (int q = 0; q < r; q++) pk = Math.max(pk, Math.abs(chunk[q]));
+                        micPeak = Math.max(pk / 32768f, micPeak * 0.85f);
                         if (n + r > all.length) all = java.util.Arrays.copyOf(all, Math.min(max, all.length * 2) + r);
                         System.arraycopy(chunk, 0, all, n, r);
                         n += r;
@@ -619,13 +623,14 @@ public class MainActivity extends Activity {
                 }
                 ar.release();
                 micRecording = false;
+                micPeak = 0f;
                 final int len = n;
                 final short[] data = all;
                 ui.post(new Runnable() {
                     public void run() {
                         updateTransport();
                         if (len < 1000) {
-                            Toast.makeText(MainActivity.this, "Nothing recorded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Nothing recorded — is the microphone allowed and free?", Toast.LENGTH_LONG).show();
                             if (done != null) done.done(null);
                             return;
                         }

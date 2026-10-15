@@ -20,10 +20,13 @@ final class WaveView extends View {
     private boolean busy;
     private int accent = Ui.ACCENT;
     private Listener listener;
+    private boolean readOnly;
 
     WaveView(Context c) { super(c); }
 
     WaveView listener(Listener l) { listener = l; return this; }
+
+    WaveView readOnly(boolean r) { readOnly = r; return this; }
 
     void set(Sample s, float start, float end, int accent, boolean busy) {
         this.sample = s;
@@ -81,8 +84,10 @@ final class WaveView extends View {
         p.setColor(0x99000000);
         cv.drawRect(0, 0, sx, h, p);
         cv.drawRect(ex, 0, w, h, p);
-        handle(cv, sx, h, "S", true);
-        handle(cv, ex, h, "E", false);
+        if (!readOnly) {
+            handle(cv, sx, h, "S", true);
+            handle(cv, ex, h, "E", false);
+        }
 
         p.setTypeface(Ui.MONO);
         p.setTextSize(Ui.dpf(10));
@@ -115,7 +120,7 @@ final class WaveView extends View {
     }
 
     @Override public boolean onTouchEvent(MotionEvent e) {
-        if (sample == null) return true;
+        if (sample == null || readOnly) return true;
         float w = getWidth(), x = e.getX() / w;
         switch (e.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:

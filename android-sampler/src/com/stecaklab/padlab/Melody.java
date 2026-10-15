@@ -41,11 +41,15 @@ final class Melody {
         final int dec = Math.max(1, sr / 16000), fs = sr / dec;
         int n = rec.l.length / dec;
         float[] y = new float[n];
+        float peak = 1e-9f;
         for (int i = 0; i < n; i++) {
             float s = 0;
             for (int k = 0; k < dec; k++) s += rec.l[i * dec + k];
             y[i] = s / dec;
+            peak = Math.max(peak, Math.abs(y[i]));
         }
+        if (peak < 1e-4f) return m;           // silence
+        for (int i = 0; i < n; i++) y[i] *= 0.8f / peak; // quiet mics still get analysed
         final int win = (int) (0.032 * fs), hop = (int) (0.010 * fs);
         final int tauMax = fs / 70, tauMin = Math.max(2, fs / 1000);
         int frames = (n - win - tauMax) / hop;
@@ -84,7 +88,7 @@ final class Melody {
             }
             int best = -1;
             for (int tau = tauMin; tau < tauMax; tau++) {
-                if (c[tau] < 0.15f) {
+                if (c[tau] < 0.2f) {
                     while (tau + 1 < tauMax && c[tau + 1] < c[tau]) tau++;
                     best = tau;
                     break;
@@ -93,7 +97,7 @@ final class Melody {
             if (best < 0) {
                 int arg = tauMin;
                 for (int tau = tauMin; tau < tauMax; tau++) if (c[tau] < c[arg]) arg = tau;
-                if (c[arg] < 0.3f) best = arg;
+                if (c[arg] < 0.4f) best = arg;
             }
             if (best < 0) continue;
             float tau = best;
@@ -184,7 +188,7 @@ final class Melody {
     }
 
     private void close(List<Float> cur, int sf, int ef, float rsum, float ref, int hop, int win, int fs) {
-        if (ef - sf < 7 || cur.isEmpty()) return;
+        if (ef - sf < 6 || cur.isEmpty()) return;
         Note n = new Note();
         n.start = (sf * (double) hop + win / 2.0) / fs;
         n.dur = (ef - sf) * (double) hop / fs;

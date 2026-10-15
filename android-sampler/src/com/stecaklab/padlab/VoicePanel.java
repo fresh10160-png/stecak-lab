@@ -21,12 +21,13 @@ final class VoicePanel extends ScrollView {
     private final Btn[] chips = new Btn[Synth.NAMES.length];
     private final TextView status;
     private final RollView roll;
+    private final WaveView wave;
     private final KnobView kKey, kScale, kOct, kRoot;
 
     private Melody melody;
     private int inst = 2, root, scale, octave, sampleRoot = 60, selNote = -1, target;
     private boolean snap = true;
-    private Sample sampleSrc, lastRender;
+    private Sample sampleSrc, lastRender, recording;
     private int gen;
     private long recStart;
 
@@ -51,6 +52,10 @@ final class VoicePanel extends ScrollView {
         top.addView(singBtn, lp(Ui.dp(120), Ui.dp(54), 0, 0, 0, 10, 0));
         top.addView(status, lp(0, -2, 1f, 0, 0, 0, 0));
         col.addView(top);
+
+        wave = new WaveView(c).readOnly(true);
+        wave.set(null, 0f, 1f, Ui.REC, false);
+        col.addView(wave, lp(-1, Ui.dp(90), 0, 0, 10, 0, 0));
 
         HorizontalScrollView rs = new HorizontalScrollView(c);
         rs.setHorizontalScrollBarEnabled(false);
@@ -169,7 +174,12 @@ final class VoicePanel extends ScrollView {
     }
 
     void tick() { // called by the activity ticker while this tab is visible
-        if (act.isMicRecording()) status.setText(String.format("REC  %.1fs", (System.currentTimeMillis() - recStart) / 1000.0));
+        if (act.isMicRecording()) {
+            int bars = Math.min(14, Math.round((float) Math.sqrt(act.micPeak) * 14f));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 14; i++) sb.append(i < bars ? '\u2588' : '\u2591');
+            status.setText(String.format("REC %.1fs\n%s", (System.currentTimeMillis() - recStart) / 1000.0, sb));
+        }
         updateTarget();
     }
 
@@ -180,32 +190,57 @@ final class VoicePanel extends ScrollView {
         recStart = System.currentTimeMillis();
         act.recordMic(new MainActivity.MicDone() {
             public void done(final Sample s) {
-                if (s == null) return;
-                status.setText("Analysing…");
+                if (s == null) { status.setText("Nothing recorded. Check the microphone permission."); return; }
+                recording = s;
+                melody = null;
+                selNote = -1;
+                roll.set(new ArrayList<Melody.Out>(), 0, -1);
+                wave.set(s, 0f, 1f, Ui.REC, false);
+                float pk = 0;
+                for (float f : s.l) pk = Math.max(pk, Math.abs(f));
+                final String info = String.format("%.1fs, peak %.0f dB", s.n / (float) Engine.SR, 20 * Math.log10(Math.max(pk, 1e-6f)));
+                status.setText("Recorded " + info + "\nAnalysing…");
                 new Thread(new Runnable() {
                     public void run() {
-                        final Melody m = Melody.analyze(s);
-                        act.runOnUiThread(new Runnable() { public void run() { gotMelody(m); } });
+                        Melody mm = null;
+                        String err = null;
+                        try { mm = Melody.analyze(s); } catch (Throwable t) { err = String.valueOf(t); }
+                        final Melody m = mm;
+                        final String e = err;
+                        act.runOnUiThread(new Runnable() {
+                            public void run() {
+                                if (e != null) status.setText("Analysis error: " + e);
+                                else gotMelody(m, info);
+                            }
+                        });
                     }
                 }).start();
             }
         });
     }
 
-    private void gotMelody(Melody m) {
+    private void gotMelody(Melody m, String info) {
         if (m.notes.isEmpty()) {
-            Toast.makeText(act, "No clear pitch found — sing louder or closer to the mic", Toast.LENGTH_LONG).show();
-            status.setText("No notes detected. Try again.");
+            Toast.makeText(act, "No clear pitch found — sing a steady “la/aaa”, a bit louder or closer to the mic", Toast.LENGTH_LONG).show();
+            status.setText("Recorded " + info + "\nNo notes detected. ORIGINAL still plays your take.");
             return;
         }
         melody = m;
         selNote = -1;
-        status.setText(m.notes.size() + " notes detected");
+        status.setText("Recorded " + info + "\n" + m.notes.size() + " notes detected");
         rerender(true);
     }
 
     // ---- shaping & rendering -------------------------------------------------------------
     private void pick(int i) {
+        if (melody == null && recording == null) {
+            Toast.makeText(act, "Sing a melody first: tap SING, sing, tap STOP", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (melody == null && i != Synth.ORIGINAL) {
+            Toast.makeText(act, "No notes were detected in that take — sing again, or use ORIGINAL", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (i == Synth.SAMPLE) {
             Sample cand = act.engine.pads[act.selected].sample;
             if (cand != null && cand != lastRender) sampleSrc = cand;
@@ -245,21 +280,27 @@ final class VoicePanel extends ScrollView {
 
     /** Re-shape the notes, redraw the roll, and render the chosen instrument into the target pad. */
     void rerender(final boolean audition) {
-        if (melody == null) return;
-        final List<Melody.Out> notes = melody.build(root, scale, octave, snap, act.engine.bpm);
+        if (melody == null && !(inst == Synth.ORIGINAL && recording != null)) return;
+        final List<Melody.Out> notes = melody == null ? new ArrayList<Melody.Out>() : melody.build(root, scale, octave, snap, act.engine.bpm);
         roll.set(notes, snap ? 60.0 / act.engine.bpm / 4 : 0, selNote);
-        if (notes.isEmpty()) { status.setText("All notes deleted"); return; }
+        if (notes.isEmpty() && inst != Synth.ORIGINAL) { status.setText("All notes deleted"); return; }
         final int myGen = ++gen, ins = inst, smpRoot = sampleRoot;
         final boolean sn = snap;
         final double bpm = act.engine.bpm;
-        final Sample rec = melody.recording, src = sampleSrc;
+        final Sample rec = recording, src = sampleSrc;
         status.setText("Rendering " + Synth.NAMES[ins] + "…");
         new Thread(new Runnable() {
             public void run() {
-                final Sample out = Synth.render(new ArrayList<Melody.Out>(notes), rec, ins, src, smpRoot, sn, bpm);
+                Sample o = null;
+                String err = null;
+                try { o = Synth.render(new ArrayList<Melody.Out>(notes), rec, ins, src, smpRoot, sn, bpm); }
+                catch (Throwable t) { err = String.valueOf(t); }
+                final Sample out = o;
+                final String e = err;
                 act.runOnUiThread(new Runnable() {
                     public void run() {
-                        if (myGen != gen || out == null) return;
+                        if (myGen != gen) return;
+                        if (out == null) { status.setText(e != null ? "Render error: " + e : "Nothing to render"); return; }
                         lastRender = out;
                         Pad p = act.engine.pads[target];
                         p.sample = out;
