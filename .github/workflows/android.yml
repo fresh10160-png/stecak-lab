@@ -1,0 +1,90 @@
+name: PadLab Android APK
+
+on:
+  push:
+    branches: [ccr-4ecd9ade-vcppof]
+    paths: ['padlab-juce/**', '!padlab-juce/dist/**', '.github/workflows/android.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  JUCE_VERSION: 8.0.15
+  NDK_VERSION: 28.1.13356709
+
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JDK 17 (Gradle) + JDK 8 (JUCE's Gradle toolchain)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            17
+
+      - name: Fetch JUCE ${{ env.JUCE_VERSION }}
+        run: git clone --depth 1 --branch "$JUCE_VERSION" https://github.com/juce-framework/JUCE.git padlab-juce/JUCE
+
+      - name: Build Projucer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libasound2-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev \
+            libxext-dev libfreetype-dev libfontconfig1-dev libgl1-mesa-dev mesa-common-dev libcurl4-openssl-dev xvfb
+          cmake -S padlab-juce/JUCE -B projucer-build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DJUCE_BUILD_EXTRAS=ON -DJUCE_BUILD_EXAMPLES=OFF -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF
+          cmake --build projucer-build --target Projucer
+
+      - name: Generate the Android Studio project
+        working-directory: padlab-juce
+        run: xvfb-run -a ../projucer-build/extras/Projucer/Projucer_artefacts/Release/Projucer --resave PadLab.jucer
+
+      - name: Android SDK pieces
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;$NDK_VERSION" "cmake;3.22.1" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Stable signing key (same key as the Java build, so the APK updates over it)
+        run: |
+          mkdir -p ~/.android
+          cp padlab-juce/debug.keystore ~/.android/debug.keystore
+
+      - name: Build APK
+        working-directory: padlab-juce/Builds/Android
+        run: |
+          export JAVA_HOME="$JAVA_HOME_17_X64"
+          chmod +x gradlew
+          {
+            echo "org.gradle.jvmargs=-Xmx4g"
+            echo "org.gradle.java.installations.fromEnv=JAVA_HOME_8_X64"
+            echo "org.gradle.java.installations.auto-download=false"
+          } >> gradle.properties
+          ./gradlew --no-daemon --stacktrace assemble
+
+      - name: Collect APK
+        run: |
+          mkdir -p padlab-juce/dist
+          APK=$(find padlab-juce/Builds/Android/app/build/outputs/apk -name '*release*.apk' | head -1)
+          echo "built: $APK"
+          cp "$APK" padlab-juce/dist/PadLab.apk
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs padlab-juce/dist/PadLab.apk | head -3
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging padlab-juce/dist/PadLab.apk | head -8
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PadLab-apk
+          path: padlab-juce/dist/PadLab.apk
+
+      - name: Commit the APK back to the branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -f padlab-juce/dist/PadLab.apk
+          git commit -m "CI: PadLab.apk [skip ci]" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"

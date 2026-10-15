@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="PadLb1" name="PadLab" projectType="guiapp" bundleIdentifier="com.stecaklab.padlab"
+              version="2.0.0" companyName="StecakLab" useAppConfig="0" addUsingNamespaceToJuceHeader="0"
+              jucerFormatVersion="1" cppLanguageStandard="17" displaySplashScreen="1"
+              reportAppUsage="0">
+  <MAINGROUP id="PadLg1" name="PadLab">
+    <GROUP id="{SRC00000-0000-0000-0000-000000000000}" name="Source">
+      <FILE id="ixkWhv" name="AudioHost.cpp" compile="1" resource="0" file="Source/AudioHost.cpp"/>
+      <FILE id="OSOhjX" name="AudioHost.h" compile="0" resource="0" file="Source/AudioHost.h"/>
+      <FILE id="RRuj3a" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="AzkW1n" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+      <FILE id="j6vrYy" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <GROUP id="{MDQHAX-GROUP}" name="core">
+        <FILE id="ynGabI" name="Common.h" compile="0" resource="0" file="Source/core/Common.h"/>
+        <FILE id="6Uz1X8" name="DemoKit.cpp" compile="1" resource="0" file="Source/core/DemoKit.cpp"/>
+        <FILE id="q0d4Ic" name="DemoKit.h" compile="0" resource="0" file="Source/core/DemoKit.h"/>
+        <FILE id="57gjam" name="Engine.cpp" compile="1" resource="0" file="Source/core/Engine.cpp"/>
+        <FILE id="LRx2M4" name="Engine.h" compile="0" resource="0" file="Source/core/Engine.h"/>
+        <FILE id="Up7Gsh" name="Fx.cpp" compile="1" resource="0" file="Source/core/Fx.cpp"/>
+        <FILE id="5m3mhQ" name="Fx.h" compile="0" resource="0" file="Source/core/Fx.h"/>
+        <FILE id="cifsy9" name="Melody.cpp" compile="1" resource="0" file="Source/core/Melody.cpp"/>
+        <FILE id="JvGvry" name="Melody.h" compile="0" resource="0" file="Source/core/Melody.h"/>
+        <FILE id="g4JcFt" name="Pad.h" compile="0" resource="0" file="Source/core/Pad.h"/>
+        <FILE id="K17gCf" name="Sample.h" compile="0" resource="0" file="Source/core/Sample.h"/>
+        <FILE id="dPJSmJ" name="Stretch.cpp" compile="1" resource="0" file="Source/core/Stretch.cpp"/>
+        <FILE id="xFdxmV" name="Stretch.h" compile="0" resource="0" file="Source/core/Stretch.h"/>
+        <FILE id="isiVwR" name="Synth.cpp" compile="1" resource="0" file="Source/core/Synth.cpp"/>
+        <FILE id="Z7Z5px" name="Synth.h" compile="0" resource="0" file="Source/core/Synth.h"/>
+      </GROUP>
+      <GROUP id="{9HKH70-GROUP}" name="ui">
+        <FILE id="rrTOtu" name="EditPanel.cpp" compile="1" resource="0" file="Source/ui/EditPanel.cpp"/>
+        <FILE id="euFVZ1" name="EditPanel.h" compile="0" resource="0" file="Source/ui/EditPanel.h"/>
+        <FILE id="9xFHgT" name="FxRack.cpp" compile="1" resource="0" file="Source/ui/FxRack.cpp"/>
+        <FILE id="mTrZmu" name="FxRack.h" compile="0" resource="0" file="Source/ui/FxRack.h"/>
+        <FILE id="JZ9RId" name="Tabs.h" compile="0" resource="0" file="Source/ui/Tabs.h"/>
+        <FILE id="pgNlYA" name="Theme.h" compile="0" resource="0" file="Source/ui/Theme.h"/>
+        <FILE id="tGF53B" name="UiState.h" compile="0" resource="0" file="Source/ui/UiState.h"/>
+        <FILE id="AeEgsN" name="Views.cpp" compile="1" resource="0" file="Source/ui/Views.cpp"/>
+        <FILE id="cy6TSZ" name="Views.h" compile="0" resource="0" file="Source/ui/Views.h"/>
+        <FILE id="R8nVhJ" name="VoicePanel.cpp" compile="1" resource="0" file="Source/ui/VoicePanel.cpp"/>
+        <FILE id="flu0up" name="VoicePanel.h" compile="0" resource="0" file="Source/ui/VoicePanel.h"/>
+        <FILE id="1QNo2c" name="Widgets.h" compile="0" resource="0" file="Source/ui/Widgets.h"/>
+      </GROUP>
+    </GROUP>
+    <GROUP id="{AST00000-0000-0000-0000-000000000000}" name="Assets">
+      <FILE id="6bGolW" name="icon.png" compile="0" resource="0" file="Assets/icon.png"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_MP3AUDIOFORMAT="1"
+               JUCE_WEB_BROWSER="0" JUCE_USE_CURL="0"/>
+  <EXPORTFORMATS>
+    <ANDROIDSTUDIO targetFolder="Builds/Android" androidMinimumSDK="24" androidTargetSDK="35"
+                   microphonePermissionNeeded="1" androidScreenOrientation="portrait"
+                   androidVersionCode="10" androidKeyAlias="padlab" androidInternetNeeded="0"
+                   androidReadMediaAudioPermission="0" androidReadMediaImagesPermission="0"
+                   androidReadMediaVideoPermission="0" androidExternalWriteNeeded="0"
+                   smallIcon="6bGolW" bigIcon="6bGolW" androidArchitectures="arm64-v8a">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" androidArchitectures="arm64-v8a"/>
+        <CONFIGURATION isDebug="0" name="Release" optimisation="3" androidArchitectures="arm64-v8a"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
+      </MODULEPATHS>
+    </ANDROIDSTUDIO>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
