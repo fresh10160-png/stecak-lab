@@ -16,7 +16,7 @@ javac -nowarn -source 8 -target 8 -bootclasspath "$JAR" -d "$OUT/classes" src/co
 (cd "$OUT" && "$BT/aapt" add -k unsigned.apk classes.dex >/dev/null)
 zipalign -f 4 "$OUT/unsigned.apk" "$OUT/aligned.apk"
 
-KS=${KEYSTORE:-$OUT/debug.keystore}
+KS=${KEYSTORE:-$PWD/debug.keystore}  # stable key, kept outside build/ so updates install over each other
 [ -f "$KS" ] || keytool -genkeypair -keystore "$KS" -storepass android -keypass android -alias padlab \
     -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=PadLab Debug" >/dev/null 2>&1
 apksigner sign --ks "$KS" --ks-pass pass:android --key-pass pass:android --out dist/padlab-debug.apk "$OUT/aligned.apk"
