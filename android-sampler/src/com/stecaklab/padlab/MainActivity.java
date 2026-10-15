@@ -36,11 +36,12 @@ public class MainActivity extends Activity {
     private boolean fxOnPad;
 
     private Lcd lcd;
-    private final Btn[] bankBtns = new Btn[4], tabBtns = new Btn[4], modeBtns = new Btn[3];
-    private final View[] tabs = new View[4];
+    private final Btn[] bankBtns = new Btn[4], tabBtns = new Btn[5], modeBtns = new Btn[3];
+    private final View[] tabs = new View[5];
     private final PadView[] padViews = new PadView[16];
     private StepGrid grid;
     private FxRack rack;
+    private VoicePanel voice;
     private Btn fxMasterBtn, fxPadBtn;
 
     // edit tab
@@ -71,6 +72,7 @@ public class MainActivity extends Activity {
     private final Runnable ticker = new Runnable() {
         public void run() {
             if (curTab == 1) refreshWarpStatus();
+            if (curTab == 4) voice.tick();
             ui.postDelayed(this, 150);
         }
     };
@@ -137,13 +139,13 @@ public class MainActivity extends Activity {
         root.addView(banks, lp(-1, -2, 0, 0, 8, 0, 0));
 
         LinearLayout bar = row();
-        String[] names = {"PADS", "EDIT", "FX", "SEQ"};
-        for (int i = 0; i < 4; i++) {
+        String[] names = {"PADS", "EDIT", "FX", "SEQ", "VOICE"};
+        for (int i = 0; i < 5; i++) {
             final int t = i;
-            Btn tb = new Btn(this, names[i]).size(12.5f).accent(Ui.TEXT);
+            Btn tb = new Btn(this, names[i]).size(11.5f).accent(Ui.TEXT);
             tb.setOnClickListener(new View.OnClickListener() { public void onClick(View v) { showTab(t); } });
             tabBtns[i] = tb;
-            bar.addView(tb, lp(0, px(42), 1f, i == 0 ? 0 : 3, 0, i == 3 ? 0 : 3, 0));
+            bar.addView(tb, lp(0, px(42), 1f, i == 0 ? 0 : 2, 0, i == 4 ? 0 : 2, 0));
         }
         root.addView(bar, lp(-1, -2, 0, 0, 6, 0, 0));
 
@@ -152,6 +154,8 @@ public class MainActivity extends Activity {
         tabs[1] = buildEdit();
         tabs[2] = buildFx();
         tabs[3] = buildSeq();
+        voice = new VoicePanel(this, this);
+        tabs[4] = voice;
         for (View v : tabs) content.addView(v, new FrameLayout.LayoutParams(-1, -1));
         root.addView(content, lp(-1, 0, 1f, 0, 8, 0, 0));
 
@@ -417,7 +421,7 @@ public class MainActivity extends Activity {
     // ---- state ---------------------------------------------------------------------------
     private void showTab(int t) {
         curTab = t;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             tabs[i].setVisibility(i == t ? View.VISIBLE : View.GONE);
             tabBtns[i].active(i == t);
         }
@@ -442,9 +446,14 @@ public class MainActivity extends Activity {
         if (grid != null) grid.invalidate();
     }
 
-    private String padTag() {
-        return "PAD " + (char) ('A' + selected / 16) + String.format("%02d", selected % 16 + 1);
+    private String padTag() { return padTag(selected); }
+
+    String padTag(int id) {
+        return "PAD " + (char) ('A' + id / 16) + String.format("%02d", id % 16 + 1);
     }
+
+    /** Called when something outside the edit tab replaced a pad's sample. */
+    void padChanged() { refreshAll(); }
 
     private void rebindRack() {
         fxMasterBtn.active(!fxOnPad);
@@ -453,7 +462,7 @@ public class MainActivity extends Activity {
         else rack.bind(engine.fx, "MASTER");
     }
 
-    private void refreshAll() {
+    void refreshAll() {
         for (PadView p : padViews) p.invalidate();
         refreshEdit();
         if (curTab == 2) rebindRack();
@@ -490,6 +499,7 @@ public class MainActivity extends Activity {
         playBtn.text(engine.playing ? "STOP" : "PLAY").icon(engine.playing ? Btn.STOP : Btn.PLAY).active(engine.playing);
         dubBtn.active(engine.overdub);
         micBtn.active(micRecording).text(micRecording ? "STOP" : "MIC");
+        if (voice != null) voice.onMicState(micRecording);
     }
 
     private void tapTempo() {
@@ -549,8 +559,26 @@ public class MainActivity extends Activity {
     }
 
     // ---- microphone sampling -------------------------------------------------------------
+    interface MicDone { void done(Sample s); }
+
+    private MicDone pendingMic;
+
+    boolean isMicRecording() { return micRecording; }
+
+    void stopMic() { micRecording = false; }
+
     private void toggleMic() {
         if (micRecording) { micRecording = false; return; }
+        final int target = selected;
+        recordMic(new MicDone() {
+            public void done(Sample s) { if (s != null) assign(target, s); }
+        });
+    }
+
+    /** Records from the mic until stopMic(); the result (leading silence trimmed) arrives on the UI thread. */
+    void recordMic(MicDone done) {
+        if (micRecording) return;
+        pendingMic = done;
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQ_MIC);
@@ -565,7 +593,7 @@ public class MainActivity extends Activity {
     }
 
     private void startMic() {
-        final int target = selected;
+        final MicDone done = pendingMic;
         micRecording = true;
         updateTransport();
         new Thread(new Runnable() {
@@ -598,13 +626,15 @@ public class MainActivity extends Activity {
                         updateTransport();
                         if (len < 1000) {
                             Toast.makeText(MainActivity.this, "Nothing recorded", Toast.LENGTH_SHORT).show();
+                            if (done != null) done.done(null);
                             return;
                         }
                         int from = 0;
                         while (from < len - 1 && Math.abs(data[from]) < 600) from++; // trim leading silence
                         float[] f = new float[len - from];
                         for (int i = 0; i < f.length; i++) f[i] = data[from + i] / 32768f;
-                        assign(target, Sample.prepare("REC", f, f, Engine.SR));
+                        Sample s = new Sample("REC", f, f);
+                        if (done != null) done.done(s);
                     }
                 });
             }
