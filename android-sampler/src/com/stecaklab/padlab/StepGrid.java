@@ -12,7 +12,7 @@ final class StepGrid extends View {
     private final MainActivity act;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF r = new RectF();
-    private int paintRow = -1, paintCol = -1;
+    private int paintRow = -1, paintCol = -1, auditioned = -1;
     private boolean paintValue;
 
     StepGrid(Context c, MainActivity act) {
@@ -20,69 +20,88 @@ final class StepGrid extends View {
         this.act = act;
     }
 
-    private float labelW() { return Ui.dp(64); }
+    private float labelW() { return Ui.dpf(70); }
+    private float headH() { return Ui.dpf(16); }
     private float cellW() { return (getWidth() - labelW()) / Engine.STEPS; }
-    private float cellH() { return getHeight() / 16f; }
+    private float cellH() { return (getHeight() - headH()) / 16f; }
 
     @Override protected void onDraw(Canvas cv) {
         Engine e = act.engine;
         int cur = e.curStep;
-        float cw = cellW(), ch = cellH(), lw = labelW();
-        paint.setTextSize(Math.min(Ui.dp(11), ch * 0.6f));
+        int bank = Ui.BANK[act.bank];
+        float cw = cellW(), ch = cellH(), lw = labelW(), hh = headH();
+        paint.setTypeface(Ui.MONO);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(Ui.dpf(9));
+        for (int s = 0; s < Engine.STEPS; s++) {
+            paint.setColor(s == cur ? Ui.ACCENT : (s % 4 == 0 ? Ui.TEXT : Ui.DIM));
+            cv.drawText(String.valueOf(s + 1), lw + (s + 0.5f) * cw, hh - Ui.dpf(4), paint);
+        }
+        paint.setTextAlign(Paint.Align.LEFT);
+        float pad = Ui.dpf(1.5f), rad = Ui.dpf(5);
         for (int row = 0; row < 16; row++) {
-            int pad = act.bank * 16 + (15 - row);
-            float top = row * ch;
+            int id = act.bank * 16 + (15 - row);
+            Pad pd = e.pads[id];
+            float top = hh + row * ch;
+            boolean sel = act.selected == id;
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(act.selected == pad ? Ui.ACCENT : Ui.DIM);
-            paint.setFakeBoldText(true);
-            String t = (16 - row) + " " + e.pads[pad].label();
-            if (t.length() > 9) t = t.substring(0, 9);
-            cv.drawText(t, Ui.dp(4), top + ch * 0.72f, paint);
+            paint.setTypeface(Ui.BOLD);
+            paint.setTextSize(Math.min(Ui.dpf(10.5f), ch * 0.55f));
+            paint.setColor(sel ? bank : Ui.DIM);
+            String t = String.format("%02d ", 16 - row) + pd.label().toUpperCase();
+            if (t.length() > 10) t = t.substring(0, 10);
+            cv.drawText(t, Ui.dpf(2), top + ch * 0.68f, paint);
             for (int s = 0; s < Engine.STEPS; s++) {
-                boolean on = e.steps[pad][s];
-                int col = on ? Ui.ACCENT : ((s / 4) % 2 == 0 ? 0xFF2a2d33 : 0xFF202328);
-                if (s == cur) col = on ? 0xFFFFD2A8 : 0xFF4a4f58;
+                boolean on = e.steps[id][s];
+                int col = on ? bank : ((s / 4) % 2 == 0 ? 0xFF22252C : 0xFF191B21);
+                if (on && s == cur) col = Ui.mix(bank, 0xFFFFFFFF, 0.6f);
                 paint.setColor(col);
-                r.set(lw + s * cw + 1.5f, top + 1.5f, lw + (s + 1) * cw - 1.5f, top + ch - 1.5f);
-                cv.drawRoundRect(r, 3, 3, paint);
+                r.set(lw + s * cw + pad, top + pad, lw + (s + 1) * cw - pad, top + ch - pad);
+                cv.drawRoundRect(r, rad, rad, paint);
             }
         }
-        if (e.playing || act.engine.curStep >= 0) postInvalidateDelayed(40);
+        if (cur >= 0) { // playhead
+            paint.setColor(0x22FFFFFF);
+            cv.drawRect(lw + cur * cw, hh, lw + (cur + 1) * cw, getHeight(), paint);
+            postInvalidateDelayed(33);
+        }
     }
 
     @Override public boolean onTouchEvent(MotionEvent ev) {
-        int row = (int) (ev.getY() / cellH());
+        int row = (int) ((ev.getY() - headH()) / cellH());
         int col = (int) ((ev.getX() - labelW()) / cellW());
         if (row < 0 || row > 15) return true;
-        int pad = act.bank * 16 + (15 - row);
+        int id = act.bank * 16 + (15 - row);
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                if (getParent() != null) getParent().requestDisallowInterceptTouchEvent(true);
                 if (ev.getX() < labelW()) {
-                    act.select(pad);
-                    act.engine.trigger(pad, 1f);
-                    final int auditioned = pad;
-                    postDelayed(new Runnable() { public void run() { act.engine.release(auditioned); } }, 150);
+                    act.select(id);
+                    act.engine.trigger(id, 1f);
+                    auditioned = id;
                     invalidate();
                     return true;
                 }
                 if (col < 0 || col >= Engine.STEPS) return true;
-                paintValue = !act.engine.steps[pad][col];
-                act.engine.steps[pad][col] = paintValue;
+                paintValue = !act.engine.steps[id][col];
+                act.engine.steps[id][col] = paintValue;
                 paintRow = row;
                 paintCol = col;
-                act.select(pad);
+                act.select(id);
                 invalidate();
                 return true;
             case MotionEvent.ACTION_MOVE:
                 if (paintRow < 0 || col < 0 || col >= Engine.STEPS) return true;
                 if (row != paintRow || col != paintCol) {
-                    act.engine.steps[pad][col] = paintValue;
+                    act.engine.steps[id][col] = paintValue;
                     paintRow = row;
                     paintCol = col;
                     invalidate();
                 }
                 return true;
             default:
+                if (auditioned >= 0) act.engine.release(auditioned);
+                auditioned = -1;
                 paintRow = -1;
                 return true;
         }

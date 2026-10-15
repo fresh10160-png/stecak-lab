@@ -4,7 +4,7 @@ import java.util.Random;
 
 /** Master-bus effect rack inspired by the Roland SP-303 / SP-202 (not exact emulations). */
 abstract class Fx {
-    static final float SR = Engine.SR;
+    static float SR = Engine.SR;
     static final float TWO_PI = (float) (2 * Math.PI);
 
     final String name;
@@ -21,6 +21,14 @@ abstract class Fx {
     }
 
     abstract void process(float[] l, float[] r, int n);
+
+    /** Allocate delay lines etc. Called off the audio thread before the effect is switched on. */
+    void alloc() { }
+
+    final void enable(boolean b) {
+        if (b) alloc();
+        on = b;
+    }
 
     String text(int i) { return Math.round(p[i] * 100) + "%"; }
 
@@ -171,12 +179,13 @@ abstract class Fx {
 
     // ---- RESONATOR: tuned feedback comb --------------------------------------------------
     static final class Resonator extends Fx {
-        private final float[][] buf = new float[2][4096];
+        private float[][] buf;
         private final float[] damp = new float[2];
         private int w;
         private float dS = 200f;
 
         Resonator() { super("RESONATOR", new String[]{"Pitch", "Feedback", "Mix"}, 0.4f, 0.8f, 0.5f); }
+        void alloc() { if (buf == null) buf = new float[2][4096]; }
 
         String text(int i) { return i == 0 ? Math.round(freq()) + " Hz" : super.text(i); }
         private float freq() { return 55f * (float) Math.pow(2.0, p[0] * 5f); }
@@ -207,11 +216,12 @@ abstract class Fx {
 
     // ---- FLANGER (SP-202 style) ----------------------------------------------------------
     static final class Flanger extends Fx {
-        private final float[][] buf = new float[2][1024];
+        private float[][] buf;
         private int w;
         private float ph;
 
         Flanger() { super("FLANGER", new String[]{"Rate", "Depth", "Feedback"}, 0.3f, 0.6f, 0.5f); }
+        void alloc() { if (buf == null) buf = new float[2][1024]; }
 
         String text(int i) { return i == 0 ? String.format("%.2f Hz", rate()) : super.text(i); }
         private float rate() { return 0.05f * (float) Math.pow(100.0, p[0]); }
@@ -271,12 +281,13 @@ abstract class Fx {
         static final String[] DIV = {"1/4", "d1/8", "1/8", "1/8T", "1/16"};
         static final float[] BEATS = {1f, 0.75f, 0.5f, 1f / 3f, 0.25f};
         private static final int SIZE = 131072, MASK = SIZE - 1;
-        private final float[][] buf = new float[2][SIZE];
+        private float[][] buf;
         private final float[] lp = new float[2];
         private int w;
         private double dS = 20000;
 
         SyncDelay() { super("SYNC DELAY", new String[]{"Time", "Feedback", "Mix"}, 0.5f, 0.5f, 0.35f); }
+        void alloc() { if (buf == null) buf = new float[2][SIZE]; }
 
         private int idx() { return Math.min(4, (int) (p[0] * 5f)); }
         String text(int i) { return i == 0 ? DIV[idx()] : super.text(i); }
@@ -316,6 +327,10 @@ abstract class Fx {
 
         Reverb() {
             super("REVERB", new String[]{"Size", "Damp", "Mix"}, 0.6f, 0.4f, 0.25f);
+        }
+
+        void alloc() {
+            if (cb[0][0] != null) return;
             for (int ch = 0; ch < 2; ch++) {
                 for (int c = 0; c < 8; c++) cb[ch][c] = new float[CT[c] + ch * 23];
                 for (int a = 0; a < 4; a++) ab[ch][a] = new float[AT[a] + ch * 23];
@@ -380,13 +395,14 @@ abstract class Fx {
 
     // ---- VINYL SIM (SP-303 signature): wow/flutter, crackle, hiss, band-limit ------------
     static final class Vinyl extends Fx {
-        private final float[][] buf = new float[2][2048];
+        private float[][] buf;
         private final float[] lp = new float[2], hp = new float[2], crk = new float[2];
         private final Random rnd = new Random(7);
         private int w;
         private double t;
 
         Vinyl() { super("VINYL SIM", new String[]{"Wow/Flutter", "Crackle", "Tone"}, 0.3f, 0.4f, 0.7f); }
+        void alloc() { if (buf == null) buf = new float[2][2048]; }
 
         void process(float[] l, float[] r, int n) {
             float wow = p[0];

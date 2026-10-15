@@ -2,8 +2,10 @@ package com.stecaklab.padlab;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -12,6 +14,7 @@ final class PadView extends View {
     private final int index; // 0..15 within bank
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF rect = new RectF();
+    private Shader sheen;
     private int held = -1;
 
     PadView(Context c, MainActivity act, int index) {
@@ -22,41 +25,79 @@ final class PadView extends View {
 
     int id() { return act.bank * 16 + index; }
 
-    @Override protected void onDraw(Canvas cv) {
-        Pad p = act.engine.pads[id()];
-        long since = (System.nanoTime() - act.engine.lastHit[id()]) / 1000000L;
-        float glow = held >= 0 ? 1f : Math.max(0f, 1f - since / 220f);
-        int base = p.sample == null ? Ui.PAD : Ui.PAD_LOADED;
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(blend(base, Ui.ACCENT, glow));
-        float m = Ui.dp(3);
-        rect.set(m, m, getWidth() - m, getHeight() - m);
-        cv.drawRoundRect(rect, Ui.dp(10), Ui.dp(10), paint);
-        if (act.selected == id()) {
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(Ui.dp(2));
-            paint.setColor(0xFFFFFFFF);
-            cv.drawRoundRect(rect, Ui.dp(10), Ui.dp(10), paint);
-        }
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(glow > 0.5f ? 0xFF000000 : Ui.TEXT);
-        paint.setTextSize(Ui.dp(12));
-        paint.setFakeBoldText(true);
-        cv.drawText(String.valueOf(index + 1), rect.left + Ui.dp(8), rect.top + Ui.dp(18), paint);
-        paint.setTextSize(Ui.dp(11));
-        String t = p.label();
-        if (t.length() > 9) t = t.substring(0, 9);
-        paint.setTextAlign(Paint.Align.CENTER);
-        cv.drawText(t, getWidth() / 2f, getHeight() - Ui.dp(12), paint);
-        paint.setTextAlign(Paint.Align.LEFT);
-        if (glow > 0 && held < 0) postInvalidateOnAnimation();
+    @Override protected void onSizeChanged(int w, int h, int ow, int oh) {
+        sheen = new LinearGradient(0, 0, 0, h, 0x26FFFFFF, 0x00FFFFFF, Shader.TileMode.CLAMP);
     }
 
-    private static int blend(int a, int b, float t) {
-        int r = (int) (((a >> 16) & 255) * (1 - t) + ((b >> 16) & 255) * t);
-        int g = (int) (((a >> 8) & 255) * (1 - t) + ((b >> 8) & 255) * t);
-        int bl = (int) ((a & 255) * (1 - t) + (b & 255) * t);
-        return 0xFF000000 | (r << 16) | (g << 8) | bl;
+    @Override protected void onDraw(Canvas cv) {
+        int id = id();
+        Pad p = act.engine.pads[id];
+        int bank = Ui.BANK[act.bank];
+        long since = (System.nanoTime() - act.engine.lastHit[id]) / 1000000L;
+        float glow = held >= 0 ? 1f : Math.max(0f, 1f - since / 260f);
+        float inset = Ui.dpf(3), rad = Ui.dpf(14);
+
+        cv.save();
+        if (held >= 0) cv.scale(0.975f, 0.975f, getWidth() / 2f, getHeight() / 2f);
+        rect.set(inset, inset, getWidth() - inset, getHeight() - inset);
+
+        if (glow > 0.02f) { // outer glow
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Ui.alpha(bank, 0.28f * glow));
+            rect.inset(-Ui.dpf(2), -Ui.dpf(2));
+            cv.drawRoundRect(rect, rad + 2, rad + 2, paint);
+            rect.inset(Ui.dpf(2), Ui.dpf(2));
+        }
+        int base = p.sample == null ? 0xFF1A1C21 : 0xFF2B2F37;
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Ui.mix(base, bank, glow * 0.92f));
+        cv.drawRoundRect(rect, rad, rad, paint);
+        paint.setShader(sheen);
+        cv.drawRoundRect(rect, rad, rad, paint);
+        paint.setShader(null);
+
+        paint.setStyle(Paint.Style.STROKE);
+        boolean sel = act.selected == id;
+        paint.setStrokeWidth(Ui.dpf(sel ? 2f : 1f));
+        paint.setColor(sel ? 0xFFFFFFFF : Ui.mix(Ui.STROKE, bank, glow));
+        cv.drawRoundRect(rect, rad, rad, paint);
+
+        paint.setStyle(Paint.Style.FILL);
+        int fg = glow > 0.5f ? 0xFF111111 : Ui.TEXT;
+        paint.setTypeface(Ui.MONO);
+        paint.setTextSize(Ui.dpf(11));
+        paint.setColor(glow > 0.5f ? 0xFF111111 : bank);
+        cv.drawText(String.valueOf(index + 1), rect.left + Ui.dpf(9), rect.top + Ui.dpf(19), paint);
+
+        // tags (top-right)
+        paint.setTypeface(Ui.BOLD);
+        paint.setTextSize(Ui.dpf(8.5f));
+        paint.setTextAlign(Paint.Align.RIGHT);
+        float tx = rect.right - Ui.dpf(8), ty = rect.top + Ui.dpf(18);
+        if (p.mode != Pad.ONE_SHOT) {
+            paint.setColor(fg);
+            cv.drawText(p.mode == Pad.LOOP ? "LOOP" : "GATE", tx, ty, paint);
+            tx -= Ui.dpf(30);
+        }
+        if (p.hasFx()) {
+            paint.setColor(glow > 0.5f ? 0xFF111111 : Ui.CYAN);
+            cv.drawText("FX", tx, ty, paint);
+            tx -= Ui.dpf(18);
+        }
+        if (p.sample != null && p.warped()) {
+            paint.setColor(glow > 0.5f ? 0xFF111111 : Ui.CYAN);
+            cv.drawText("TS", tx, ty, paint);
+        }
+
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(Ui.dpf(11.5f));
+        paint.setColor(fg);
+        String t = p.label();
+        if (t.length() > 9) t = t.substring(0, 9);
+        cv.drawText(t.toUpperCase(), getWidth() / 2f, getHeight() - Ui.dpf(13), paint);
+        paint.setTextAlign(Paint.Align.LEFT);
+        cv.restore();
+        if (glow > 0 && held < 0) postInvalidateOnAnimation();
     }
 
     @Override public boolean onTouchEvent(MotionEvent e) {

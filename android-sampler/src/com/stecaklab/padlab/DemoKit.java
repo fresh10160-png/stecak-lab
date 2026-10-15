@@ -4,10 +4,12 @@ import java.util.Random;
 
 /** Synthesised 808-ish kit so the app makes noise on first launch, no files needed. */
 final class DemoKit {
-    private static final double SR = Engine.SR;
+    private static double SR = Engine.SR;
     private static final Random R = new Random(1234);
 
     static void load(Engine e) {
+        SR = Engine.SR;
+        R.setSeed(1234);
         String[] names = {"KICK", "SNARE", "CL HAT", "OP HAT", "CLAP", "RIM", "TOM LO", "TOM HI",
                 "COWBELL", "BASS", "STAB", "PLUCK", "SWEEP", "ZAP", "CRASH", "PERC"};
         float[][] d = {kick(), snare(), hat(0.09, 70), hat(0.6, 9), clap(), rim(), tom(110, 70, 8),
